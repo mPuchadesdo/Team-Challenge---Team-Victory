@@ -11,4 +11,4 @@ CARACTER_BARCO = " "
 CARACTER_DISPARO_OK = "*"
 
 #Caracter para posición agua con disparo
-CARÁCTER_DISPARO_NOK = "-"
+CARACTER_DISPARO_NOK = "-"
