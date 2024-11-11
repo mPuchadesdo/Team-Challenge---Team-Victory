@@ -1,3 +1,5 @@
+from clases import Barco, Tablero
+
 class Partida:
     # Dificultad y nombre del jugador como argumentos
     def __init__(self, dificultad, nombre_jugador):
