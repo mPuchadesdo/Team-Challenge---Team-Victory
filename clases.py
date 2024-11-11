@@ -1,5 +1,8 @@
 #Clase tablero 
 from variables import TABLERO_LONGITUD, CARACTER_AGUA, CARACTER_BARCO, CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK
+
+import numpy as np 
+
 class Barco: 
 
     def __init__(self, longitud, posicion_x, posicion_y, orientacion):
@@ -28,9 +31,8 @@ class Tablero:
         self.tablero_disparo_OK = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)
         self.tablero_disparo_NOK = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)  
         self.barcos_restantes = len(barcos)  # Número total de barcos en el tablero
- 
-
-   def disparar(self, fila, columna):
+        
+    def disparar(self, fila, columna):
         if self.tablero_barcos[fila, columna] == CARACTER_BARCO:
             self.tablero_disparo_OK[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
             self.barcos_restantes -= 1  # Reducimos el número de barcos restantes
