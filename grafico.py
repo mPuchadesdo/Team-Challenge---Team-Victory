@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import variables as var
  
 #Genereación de datos para pruebbas
@@ -87,6 +88,8 @@ def get_totales(total_caracteres, total_disparos, disparos_pendientes):
 
 #Función que develve pinta por pantalla la información del juego (turno, nombres), tableros y totales
 def pintar_tableros():
+    
+    os.system('cls')
     #Sustituir por los nombbres de las variables de los tableros de las partidas
     array_tableroJ1 = get_tablero_string(tablero, True)
     array_tableroJ2 = get_tablero_string(tablero)
