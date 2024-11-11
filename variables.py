@@ -5,10 +5,13 @@ TABLERO_LONGITUD = 10
 CARACTER_AGUA = " "
 
 #Caracter para posición de barco sin disparo
-CARACTER_BARCO = " "
+CARACTER_BARCO = "X"
 
 #Caracter para posición de barco con disparo
 CARACTER_DISPARO_OK = "*"
 
 #Caracter para posición agua con disparo
 CARACTER_DISPARO_NOK = "-"
+
+#Número mínimo de caracteres de sepración entre tableros
+NUM_CARACTERES_SEPARACION_TABLEROS = 10
