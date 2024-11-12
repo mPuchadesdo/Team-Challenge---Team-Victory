@@ -21,6 +21,7 @@ def limpieza_nombre_usuario():
 
 def limpieza_coordenada():
     no_valido = True
+    finalizar_partida = False
     coordenada = ""
     while no_valido:
         coordenada = input("Por favor, introduzca la coordenada a la que quiere disparar:")
@@ -28,7 +29,8 @@ def limpieza_coordenada():
         lista_coordenada_int = [] # Creamos una lista vacia en la que meteremos ints en vez de str
         if coordenada == "salir":
             no_valido = False
-            break # ¿¿¿???
+            finalizar_partida = True
+            return finalizar_partida
         else:
             coordenada = coordenada.split(",") # Separamos el string utilizando la coma y convirtiendo el input en una lista de 2 items
             for i in coordenada:
