@@ -17,15 +17,15 @@ tablero[5,8] = var.CARACTER_DISPARO_NOK
 #Obtener datos de Partida
 turno = 1
 
-nombre_jugador_1 = "Jugador 1"
-total_disparos_1 = 10
-disparos_pendientes_1 = 8
-mensaje_turno_1 = f"Coordenada (6,6) -> TOCADO!!!"
+nombre_jugador_humano = "Humano"
+total_disparos_humano = 10
+disparos_pendientes_humano = 8
+mensajes_turno_humano = ["Coordenada (6,6) -> TOCADO!!!","Coordenada (6,7) -> TOCADO!!!","Coordenada (6,8) -> AGUA!!!"]
 
-nombre_jugador_2 = "Jugador 2"
-total_disparos_2 = 5
-disparos_pendientes_2 = 13
-mensaje_turno_2 = f"Coordenada (6,9) -> Agua"
+nombre_jugador_maquina = "Maquina"
+total_disparos_maquina = 5
+disparos_pendientes_maquina = 13
+mensajes_turno_maquina = ["Coordenada (4,3) -> TOCADO!!!","Coordenada (4,4) -> AGUA!!!"]
 
 # FIN Genereación de datos para pruebbas
 
@@ -91,8 +91,8 @@ def pintar_tableros():
     
     os.system('cls')
     #Sustituir por los nombbres de las variables de los tableros de las partidas
-    array_tableroJ1 = get_tablero_string(tablero, True)
-    array_tableroJ2 = get_tablero_string(tablero)
+    array_tableroJ1 = get_tablero_string(tablero)
+    array_tableroJ2 = get_tablero_string(tablero, True)
 
     len_linea_tablero = len(array_tableroJ1[0])
     separador_tableros = " " * var.NUM_CARACTERES_SEPARACION_TABLEROS
@@ -101,16 +101,10 @@ def pintar_tableros():
     print(f"TURNO: {turno}")
 
     #Pintar nombbre de los jugadores
-    cabecera = f"J1:{nombre_jugador_1}"
+    cabecera = f"J1:{nombre_jugador_humano}"
     cabecera += get_relleno_cadena(len_linea_tablero, cabecera) + separador_tableros 
-    cabecera += f"J2:{nombre_jugador_2}"
+    cabecera += f"J2:{nombre_jugador_maquina}"
     print(cabecera)
-
-    #Pintar mensaje resultado de los disparos de cada turno
-    mensajes_turno = " > " + mensaje_turno_1
-    mensajes_turno += get_relleno_cadena(len_linea_tablero, mensajes_turno) + separador_tableros
-    mensajes_turno += " > " + mensaje_turno_2
-    print(mensajes_turno)
 
     #Pintar tableros
     for idx, linea in enumerate(array_tableroJ1):
@@ -118,10 +112,28 @@ def pintar_tableros():
         print(lineaStr)
 
     #Pintamos los disparos totales y pendientes
-    str_total_1, str_pendientes_1 = get_totales(len_linea_tablero, total_disparos_1, disparos_pendientes_1)
-    str_total_2, str_pendientes_2 = get_totales(len_linea_tablero, total_disparos_2, disparos_pendientes_2)
+    str_total_1, str_pendientes_1 = get_totales(len_linea_tablero, total_disparos_humano, disparos_pendientes_humano)
+    str_total_2, str_pendientes_2 = get_totales(len_linea_tablero, total_disparos_maquina, disparos_pendientes_maquina)
 
     print(str_total_1 + separador_tableros + str_total_2)
     print(str_pendientes_1 + separador_tableros + str_pendientes_2)
+
+    #Pintar mensaje resultado de los disparos de cada turno
+    mensajes = [len(mensajes_turno_humano), len(mensajes_turno_maquina)]
+
+    print()
+    mensaje = f"--- J1 DISPAROS TURNO {turno} ---"
+    mensaje += get_relleno_cadena(len_linea_tablero, mensaje) + separador_tableros
+    mensaje += f"--- J2 DISPAROS TURNO {turno} ---"
+    print(mensaje)
+
+    for idx in range(0, max(mensajes)):
+        mensaje = ""
+        if idx < len(mensajes_turno_humano):
+            mensaje = " >" + mensajes_turno_humano[idx]
+        if idx < len(mensajes_turno_maquina):
+            mensaje += get_relleno_cadena(len_linea_tablero, mensaje) + separador_tableros + " >" + mensajes_turno_maquina[idx]
+        print(mensaje)
+    print()
 
 pintar_tableros()
