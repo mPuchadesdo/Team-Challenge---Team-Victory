@@ -69,7 +69,17 @@ class Tablero:
                     barco.set_posiciones(posiciones, direccion)
                     colocado = True
 
-    def disparar(self, fila, columna):
+    def disparar(self,fila,columna):
+        
+        coordenadas = input("Inserta unas coordenadas (ejemplo: 3,4): ")
+        # Separar las coordenadas en fila y columna
+        try:
+            fila, columna = map(int, coordenadas.split(","))
+        
+        except ValueError:
+            print("Entrada inválida. Asegúrate de ingresar dos números separados por una coma.")
+            return
+    
         if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
             print("Ya has disparado a esta posición")
 
