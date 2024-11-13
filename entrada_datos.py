@@ -4,7 +4,7 @@ import variables as var
 
 # Funcion para la introducción del nombre del usuario.
 
-def limpieza_nombre_usuario():
+def nombre_usuario():
     no_valido = True
     texto = ""
     while no_valido:
@@ -19,7 +19,7 @@ def limpieza_nombre_usuario():
 
 # Vamos a recoger las coordenadas de disparo como si fueran una lista:
 
-def limpieza_coordenada():
+def coordenada_disparo():
     no_valido = True
     finalizar_partida = False
     coordenada = ""
@@ -47,7 +47,7 @@ def limpieza_coordenada():
 
 # Para elegir la dificultad vamos a hacer esta funcion:
 
-def eleccion_dificultad():
+def dificultad():
     dificultad = np.array(["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]) # Le ponemos un nombre a cada dificultad (de más fácil a más difícil)
     print("Dificultad 1: Marinero \nDificultad 2: Timonel \nDificultad 3: Contramaestre \nDificultad 4: Oficial \nDificultad 5: Capitán")
     no_valido = True
