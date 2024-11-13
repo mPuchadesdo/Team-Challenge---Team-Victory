@@ -4,7 +4,7 @@ import variables as var
 
 # Funcion para la introducción del nombre del usuario.
 
-def nombre_usuario():
+def nombre_jugador():
     no_valido = True
     texto = ""
     while no_valido:
