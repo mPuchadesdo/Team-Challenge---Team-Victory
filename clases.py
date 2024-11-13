@@ -120,11 +120,22 @@ import numpy as np
 #CARACTER_DISPARO_NOK = '-'
 
 # Crear algunos barcos (por ejemplo, uno de tamaño 3 y otro de tamaño 4)
-barco1 = Barco(longitud=3)
-barco2 = Barco(longitud=4)
+barco1 = Barco(longitud=1)
+barco2 = Barco(longitud=1)
+barco3 = Barco(longitud=1)
+barco4 = Barco(longitud=1)
+
+barco5 = Barco(longitud=2)
+barco6= Barco(longitud=2)
+barco7= Barco(longitud=2)
+
+barco8= Barco(longitud=3)
+barco9 = Barco(longitud=3)
+
+barco10 = Barco(longitud=1)
 
 # Crear un tablero para un usuario
-tablero = Tablero(usuario="Jugador 1", barcos=[barco1, barco2])
+tablero = Tablero(usuario="Jugador 1", barcos=[barco1, barco2, barco3, barco4, barco5, barco6, barco7, barco8, barco9, barco10])
 
 # Colocar los barcos aleatoriamente en el tablero
 tablero.colocar_barcos()
