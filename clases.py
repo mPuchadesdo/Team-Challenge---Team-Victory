@@ -132,7 +132,7 @@ barco7= Barco(longitud=2)
 barco8= Barco(longitud=3)
 barco9 = Barco(longitud=3)
 
-barco10 = Barco(longitud=1)
+barco10 = Barco(longitud=4)
 
 # Crear un tablero para un usuario
 tablero = Tablero(usuario="Jugador 1", barcos=[barco1, barco2, barco3, barco4, barco5, barco6, barco7, barco8, barco9, barco10])
