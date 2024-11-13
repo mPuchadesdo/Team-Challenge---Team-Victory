@@ -1,4 +1,3 @@
-#Clase tablero 
 from variables import TABLERO_LONGITUD, CARACTER_AGUA, CARACTER_BARCO, CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK
 
 import numpy as np 
@@ -69,17 +68,23 @@ class Tablero:
                     barco.set_posiciones(posiciones, direccion)
                     colocado = True
 
-    def disparar(self,fila,columna):
-        
-        coordenadas = input("Inserta unas coordenadas (ejemplo: 3,4): ")
-        # Separar las coordenadas en fila y columna
-        try:
-            fila, columna = map(int, coordenadas.split(","))
-        
-        except ValueError:
-            print("Entrada inválida. Asegúrate de ingresar dos números separados por una coma.")
-            return
-    
+    def disparar(self, fila = None, columna = None):
+        if fila is None or columna is None:
+            while True:
+                coordenadas = input("Inserta unas coordenadas (ejemplo: 3,4): ")
+
+                try:
+                    # Separar las coordenadas en fila y columna
+                    fila, columna = map(int, coordenadas.split(","))
+
+                    # Comprobar que las coordenadas estén dentro del rango del tablero
+                    if fila < 0 or fila >= TABLERO_LONGITUD or columna < 0 or columna >= TABLERO_LONGITUD:
+                        print(f"Coordenadas fuera del rango del tablero. El tablero es de 0 a {TABLERO_LONGITUD-1}. Intenta nuevamente.")
+                    else:
+                        break  # Salir del bucle si las coordenadas son válidas
+                except ValueError:
+                    print("Entrada no válida. Asegúrate de ingresar dos números separados por una coma.")
+
         if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
             print("Ya has disparado a esta posición")
 
@@ -129,13 +134,13 @@ tablero.mostrar_tableros()
 
 # Realizar algunos disparos
 print("\nDisparando a la posición...")
-tablero.disparar(2, 3)
+tablero.disparar()
 
 print("\nDisparando a la posición ...")
-tablero.disparar(4, 5)
+tablero.disparar()
 
 print("\nDisparando a la posición...")
-tablero.disparar(7, 7)
+tablero.disparar()
 
 # Mostrar el estado de los tableros después de los disparos
 tablero.mostrar_tableros()
