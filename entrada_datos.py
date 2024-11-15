@@ -1,6 +1,7 @@
 import numpy as np
+import random
 import pandas as pd
-import variables as var
+from variables import *
 
 # Funcion para la introducción del nombre del usuario.
 
@@ -36,7 +37,7 @@ def coordenada_disparo():
             for i in coordenada:
                 lista_coordenada_int.append(int(i))
             coordenada_array = np.array(lista_coordenada_int)
-            if coordenada_array.max() <= var.TABLERO_LONGITUD and coordenada_array.min() >= 0:
+            if coordenada_array.max() <= TABLERO_LONGITUD and coordenada_array.min() >= 0:
                 no_valido = False
                 return lista_coordenada_int
             else:
@@ -62,4 +63,11 @@ def dificultad():
 
 
 # _______________________________________________________________________________________________________
+
+# Genera una coordenada aleatoria para el disparo de la máquina
+
+def coordenada_aleatoria():
+    coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2)
+    return coordenada
+
 

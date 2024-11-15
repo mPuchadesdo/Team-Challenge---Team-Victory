@@ -4,7 +4,7 @@ from pruebas.objetos import *
 
 
 print("""
-Bienbenid@
+Bienvenid@
 
 Dispara tu contrincante para hundir sus barcos. 
 En cada turno, introduce las coordenadas de tu disparo.
