@@ -129,17 +129,19 @@ class Barco:
 class Tablero:    
     def __init__(self,usuario): 
         self.usuario = usuario
-    #    self.barcos = barcos   
+    #    self.barcos = barcos # lo comento porque no necesitamos este atributo, no vamos a enseñar los barcos ni cambiarlos en ningún momento
         self.mis_barcos = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)  # Tablero donde se colocan los barcos
-        self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
+        self.campo_batalla = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
     #    self.barcos_restantes = len(barcos)  # Número total de barcos en el tablero
         # self.total_disparos = 0 
 
-    def mostrar_tableros(self):
-        print("Tablero de Barcos")
-        print(self.mis_barcos)
-        print("Tablero de Disparos")
-        print(self.tablero_disparo)
+    def mostrar_tableros(self, propio = True, campo_batalla = True):
+        if propio == True:
+            print("Tablero de Barcos")
+            print(self.mis_barcos)
+        if campo_batalla == True:
+            print("Tablero de Disparos")
+            print(self.campo_batalla)
 
     def colocar_barcos(self):
         for barco in self.barcos:
@@ -172,7 +174,7 @@ class Tablero:
 # en la funcion coordenada disparo: return lista_coordenada_int, siendo lista_coordenada_int = [] de ints
     def disparar(self, coordenada_disparo, tablero_rival):
         fila, columna = coordenada_disparo
-        disparos = 1
+        
         # lo siguiente ya lo ha controlado Mariano en entrada_datos
         # if fila is None or columna is None:
         #     while True:
@@ -189,66 +191,72 @@ class Tablero:
         #                 break  # Salir del bucle si las coordenadas son válidas
         #         except ValueError:
         #             print("Entrada no válida. Asegúrate de ingresar dos números separados por una coma.")
-        if disparos < 0: # aquí veo un problema y es que no te cambia el tablero rival
-            if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
-                print("Ya has disparado a esta posición") 
-                disparos -=1
-            # aquí nos lo estabamos tirando a nosotros mismos, por eso he metido tablero_rival
-            elif tablero_rival[fila, columna] == CARACTER_BARCO:
-                self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
-                # self.barcos_restantes -= 1  # Reducimos el número de barcos restantes. ## Pero esto no es vdd, pq des a una pieza no hundes un barco
-                print(f"¡Has dado a un barco!")
+        
+        if self.campo_batalla[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
+            print("Ya has disparado a esta posición") 
+            return False
+        
+        # aquí nos lo estabamos tirando a nosotros mismos, por eso he metido tablero_rival
+        elif tablero_rival.mis_barcos[fila, columna] == CARACTER_BARCO:
+            self.campo_batalla[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
+            tablero_rival.mis_barcos[fila, columna] = CARACTER_DISPARO_OK # cambiamos también el tablero rival. OJO: cambiarlo para hacer una asignación en cadena
+            # self.barcos_restantes -= 1  # Reducimos el número de barcos restantes. ## Pero esto no es vdd, pq des a una pieza no hundes un barco
+            print(f"¡Has dado a un barco!")
+            return True
 
-            else:
-                self.tablero_disparo[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
-                disparos -= 1
-                print(f"Mala suerte...¡Agua!")
-    
-    def control_de_hundidos():
+        else:
+            self.campo_batalla[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
+            # podríamos plantearnos si cambiar también el tablero rival con "-" para hacer ver dónde nos han disparado, aunque haya sido agua
+            print(f"Mala suerte...¡Agua!")
+            return False
+        
+    def control_de_hundidos(self):
         if CARACTER_BARCO not in self.mis_barcos:
             return True
         else:
             return False
 
+def coordenada_aleatoria(tablero_batalla):
+    # que busque en el tablero de campo de batalla (de la máquina) los espacios sin disparar y que escoja uno aleatoriamente
+    # Devuelve una lista con las coordenadas
 
 # def gestion_turnos():
-        contador_turnos = 1
-        while True:
-            print(f"TURNO {contador_turnos}")
+#     contador_turnos = 1
+#         while True:
+#             print(f"TURNO {contador_turnos}")
 
-            # Turno del jugador 1
-            jugador_acierta = True
-            while jugador_acierta:
-                x,y = ed.coordenada_disparo()
-                if tablero_maquina.disparar(x, y):
-                    print("¡Acierto! Puedes volver a disparar.")
-                if tablero_maquina.comprobar_todos_hundidos():
-                    print("HAS GANADO!!!")
-                    return
-                else:
-                    print(f"Agua. Turno de la máquina")
-                    jugador_acierta = False
+#             # Turno del jugador 1
+#             jugador_acierta = True
+#             while jugador_acierta:
+#                 x,y = ed.coordenada_disparo()
+#                 if tablero_maquina.disparar(x, y):
+#                     print("¡Acierto! Puedes volver a disparar.")
+#                 if tablero_maquina.comprobar_todos_hundidos():
+#                     print("HAS GANADO!!!")
+#                     return
+#                 else:
+#                     print(f"Agua. Turno de la máquina")
+#                     jugador_acierta = False
 
-            # Turno de la máquina
-            maquina_acierta = True
-            while maquina_acierta:
-                mx, my = fn.coordenadas_aleatorias() # mx my maquinas coordenadas
-                if tablero_jugador.disparar(mx, my):
-                    print("La máquina acertó. Vuelve a disparar.") # esto no hace sentido para mí, no va a funcionar creo, pendiente de validar
+#             # Turno de la máquina
+#             maquina_acierta = True
+#             while maquina_acierta:
+#                 mx, my = fn.coordenadas_aleatorias() # mx my maquinas coordenadas
+#                 if tablero_jugador.disparar(mx, my):
+#                     print("La máquina acertó. Vuelve a disparar.") # esto no hace sentido para mí, no va a funcionar creo, pendiente de validar
 
-                if tablero_jugador.comprobar_todos_hundidos():
-                    print("Has perdido. Fin del juego.")
-                    return
-                else:
-                    print("La máquina falló. Tu turno.")
-                    maquina_acierta = False
+#                 if tablero_jugador.comprobar_todos_hundidos():
+#                     print("Has perdido. Fin del juego.")
+#                     return
+#                 else:
+#                     print("La máquina falló. Tu turno.")
+#                     maquina_acierta = False
 
-    # esto yo me lo voy a llevar al principio del todo
-            # Mostrar el estado actual de los tableros
-            print("\nEstado actual del juego:")
-            print("Tablero del jugador:")
-            tablero_jugador.mostrar_tableros()
-            print("\nTablero de la máquina (sin mostrar barcos):")
-            tablero_maquina.mostrar_tablero_oculto()
-        
-            contador_turnos += 1        
+#     # esto yo me lo voy a llevar al principio del todo
+#             # Mostrar el estado actual de los tableros
+#             print("\nEstado actual del juego:")
+#             print("Tablero del jugador:")
+#             tablero_jugador.mostrar_tableros()
+#             print("\nTablero de la máquina (sin mostrar barcos):")
+#             tablero_maquina.mostrar_tablero_oculto()
+# contador_turnos += 1
