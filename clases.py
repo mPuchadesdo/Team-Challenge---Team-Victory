@@ -18,12 +18,36 @@ class Barco:
         self.posiciones = posiciones
         self.orientacion = orientacion
 
-    #def disparar(self): #lo quito porque lo he metido en tablero ya 
-        #if self.disparos_pendientes > 0: 
-            #self.total_disparos += 1
-            #self.disparos_pendientes -= 1 
-        #else: 
-            #("Tus barcos ya están hundidos")
+    def colocar_en_tablero(self, tablero_barcos): #tablero_barcos porque estamos accediendo a la clase tablero
+        TABLERO_LONGITUD = len(tablero_barcos)  # Asumimos que el tablero es cuadrado
+
+        colocado = False
+        while not colocado:
+            direccion = random.choice(['N', 'S', 'E', 'O'])
+            if direccion == 'E': 
+                fila = random.randint(0, TABLERO_LONGITUD - 1)
+                columna = random.randint(0, TABLERO_LONGITUD - self.longitud)
+                posiciones = [(fila, columna + i) for i in range(self.longitud)]
+            elif direccion == 'O':  
+                fila = random.randint(0, TABLERO_LONGITUD - 1)
+                columna = random.randint(self.longitud - 1, TABLERO_LONGITUD - 1)
+                posiciones = [(fila, columna - i) for i in range(self.longitud)]
+            elif direccion == 'S':  
+                fila = random.randint(0, TABLERO_LONGITUD - self.longitud)
+                columna = random.randint(0, TABLERO_LONGITUD - 1)
+                posiciones = [(fila + i, columna) for i in range(self.longitud)]
+            elif direccion == 'N':  
+                fila = random.randint(self.longitud - 1, TABLERO_LONGITUD - 1)
+                columna = random.randint(0, TABLERO_LONGITUD - 1)
+                posiciones = [(fila - i, columna) for i in range(self.longitud)]
+
+            # Verificar si las posiciones están libres
+            if all(tablero_barcos[f][c] == CARACTER_AGUA for f, c in posiciones):
+                for f, c in posiciones:
+                    tablero_barcos[f][c] = CARACTER_BARCO
+                self.set_posiciones(posiciones, direccion)
+                colocado = True
+
 
     def hundido(self, disparos_pendientes): 
         if disparos_pendientes == 0: 
@@ -39,34 +63,38 @@ class Tablero:
         self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
         self.barcos_restantes = len(barcos)  # Número total de barcos en el tablero
         self.total_disparos = 0 
-
+        
     def colocar_barcos(self):
         for barco in self.barcos:
-            colocado = False
-            while not colocado:
-                direccion = random.choice(['N', 'S', 'E', 'O'])
-                if direccion == 'E': 
-                    fila = random.randint(0, TABLERO_LONGITUD - 1)
-                    columna = random.randint(0, TABLERO_LONGITUD - barco.longitud)
-                    posiciones = [(fila, columna + i) for i in range(barco.longitud)]
-                elif direccion == 'O':  
-                    fila = random.randint(0, TABLERO_LONGITUD - 1)
-                    columna = random.randint(barco.longitud - 1, TABLERO_LONGITUD - 1)
-                    posiciones = [(fila, columna - i) for i in range(barco.longitud)]
-                elif direccion == 'S':  
-                    fila = random.randint(0, TABLERO_LONGITUD - barco.longitud)
-                    columna = random.randint(0, TABLERO_LONGITUD - 1)
-                    posiciones = [(fila + i, columna) for i in range(barco.longitud)]
-                elif direccion == 'N':  
-                    fila = random.randint(barco.longitud - 1, TABLERO_LONGITUD - 1)
-                    columna = random.randint(0, TABLERO_LONGITUD - 1)
-                    posiciones = [(fila - i, columna) for i in range(barco.longitud)]
+            barco.colocar_en_tablero(self.tablero_barcos)
 
-                if all(self.tablero_barcos[f][c] == CARACTER_AGUA for f, c in posiciones):
-                    for f, c in posiciones:
-                        self.tablero_barcos[f][c] = CARACTER_BARCO
-                    barco.set_posiciones(posiciones, direccion)
-                    colocado = True
+    #def colocar_barcos(self):
+        #for barco in self.barcos:
+            #colocado = False
+            #while not colocado:
+                #direccion = random.choice(['N', 'S', 'E', 'O'])
+                #if direccion == 'E': 
+                    #fila = random.randint(0, TABLERO_LONGITUD - 1)
+                    #columna = random.randint(0, TABLERO_LONGITUD - barco.longitud)
+                    #posiciones = [(fila, columna + i) for i in range(barco.longitud)]
+                #elif direccion == 'O':  
+                    #fila = random.randint(0, TABLERO_LONGITUD - 1)
+                    #columna = random.randint(barco.longitud - 1, TABLERO_LONGITUD - 1)
+                    #posiciones = [(fila, columna - i) for i in range(barco.longitud)]
+                #elif direccion == 'S':  
+                    #fila = random.randint(0, TABLERO_LONGITUD - barco.longitud)
+                    #columna = random.randint(0, TABLERO_LONGITUD - 1)
+                    #posiciones = [(fila + i, columna) for i in range(barco.longitud)]
+                #elif direccion == 'N':  
+                    #fila = random.randint(barco.longitud - 1, TABLERO_LONGITUD - 1)
+                    #columna = random.randint(0, TABLERO_LONGITUD - 1)
+                    #posiciones = [(fila - i, columna) for i in range(barco.longitud)]
+
+                #if all(self.tablero_barcos[f][c] == CARACTER_AGUA for f, c in posiciones):
+                    #for f, c in posiciones:
+                        #self.tablero_barcos[f][c] = CARACTER_BARCO
+                    #barco.set_posiciones(posiciones, direccion)
+                    #colocado = True
 
     def disparar(self, fila = None, columna = None):
         if fila is None or columna is None:
@@ -106,6 +134,15 @@ class Tablero:
         print("Tablero de Disparos")
         print(self.tablero_disparo)
 
+    def iniciar_partida(self): 
+        print("¡Bienvenido a hundir la flota!")
+
+        ## igual elegir aquí el nivel de dificultad? 
+
+        self.colocar_barcos()
+        self.mostrar_tableros()
+        
+
 
 ############CODIGO DE PRUEBA 
 
@@ -137,11 +174,13 @@ barco10 = Barco(longitud=4)
 # Crear un tablero para un usuario
 tablero = Tablero(usuario="Jugador 1", barcos=[barco1, barco2, barco3, barco4, barco5, barco6, barco7, barco8, barco9, barco10])
 
+tablero.iniciar_partida()
+
 # Colocar los barcos aleatoriamente en el tablero
-tablero.colocar_barcos()
+#tablero.colocar_barcos()
 
 # Mostrar el estado de los tableros
-tablero.mostrar_tableros()
+#tablero.mostrar_tableros()
 
 # Realizar algunos disparos
 print("\nDisparando a la posición...")
