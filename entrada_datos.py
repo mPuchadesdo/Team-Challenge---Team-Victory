@@ -2,17 +2,18 @@ import numpy as np
 import random
 import pandas as pd
 from variables import *
+from clases import *
 
 # Funcion para la introducción del nombre del usuario.
 
 def nombre_jugador():
     no_valido = True
-    texto = ""
+    nombre_jugador = ""
     while no_valido:
-        texto = input("Por favor, introduzca el nombre de usuario (máximo 15 caracteres): ")
-        if len(texto) <= 15: # Debe tener un máximo de 15 caracteres de longitud
+        nombre_jugador = input("Por favor, introduzca el nombre de usuario (máximo 15 caracteres): ")
+        if len(nombre_jugador) <= 15: # Debe tener un máximo de 15 caracteres de longitud
             no_valido = False
-            return texto
+            return nombre_jugador
         else:
             print("Lo siento, el nombre usuario excede el número de caracteres posibles.")
 
@@ -49,15 +50,16 @@ def coordenada_disparo():
 # Para elegir la dificultad vamos a hacer esta funcion:
 
 def dificultad():
-    dificultad = np.array(["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]) # Le ponemos un nombre a cada dificultad (de más fácil a más difícil)
-    print("Dificultad 1: Marinero \nDificultad 2: Timonel \nDificultad 3: Contramaestre \nDificultad 4: Oficial \nDificultad 5: Capitán")
+    # dificultad = np.array(["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]) # Le ponemos un nombre a cada dificultad (de más fácil a más difícil)
+    print("Dificultad 1: Marinero \nDificultad 2: Timonel \nDificultad 3: Contramaestre \nDificultad 4: Oficial \nDificultad 5: Capitán") # TODO: pintar con el array de rangos en variables.
     no_valido = True
     while no_valido:
         eleccion_dificultad = int(input("Elija la dificultad del 1 al 5: ")) # Le pedimos al sujeto que seleccione la dificultad
         if eleccion_dificultad <= 5 and eleccion_dificultad >= 1: # Corroboramos que está entre 1 y 5
-            dificultad_seleccionada = dificultad[eleccion_dificultad-1]
+            dificultad_seleccionada = RANGOS[eleccion_dificultad-1]
             print(f"Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
             no_valido = False
+            #TODO: devuelves la dificultad en forma de int
         else:
             print("Lo siento, no tenemos un cargo para esa dificultad.")
 
@@ -66,12 +68,20 @@ def dificultad():
 
 # Genera una coordenada aleatoria para el disparo de la máquina sin repetir
 
-def coordenada_aleatoria():
-    coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2)
-    if any(np.array_equal(coordenada, v) for v in COORDENADAS_MAQUINA_LIST):
-        coordenada_aleatoria()
-    else:
-        COORDENADAS_MAQUINA_LIST.append(coordenada)
-    return coordenada
+def disparo_aleatorio(dificultad, tablero):
+    disparo_correcto = False
+    d = 1
+    while not disparo_correcto and d <= dificultad:
+        coordenada_correcta = False
+        d += 1
+        while not coordenada_correcta:
+            coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2)
+            if not any(np.array_equal(coordenada, v) for v in COORDENADAS_MAQUINA_LIST):
+                COORDENADAS_MAQUINA_LIST.append(coordenada)
+                coordenada_correcta = True 
+        if tablero.es_disparo_ok(coordenada[0], coordenada[1]):
+            disparo_correcto = True
+    return coordenada    
+
 
 

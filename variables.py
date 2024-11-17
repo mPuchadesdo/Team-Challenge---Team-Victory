@@ -18,3 +18,6 @@ NUM_CARACTERES_SEPARACION_TABLEROS = 10
 
 #Lista que recoge las coordenadas a las que ya ha disparado la máquina
 COORDENADAS_MAQUINA_LIST = []
+
+#Rangos de dificultad
+RANGOS = ["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]
