@@ -1,6 +1,9 @@
-from clases import Barco, Tablero
+from clases import *
+from pruebas.objetos import *
+from main import *
 import funciones as fn
 import entrada_datos as ed
+
 
 
 class Partida:
@@ -40,9 +43,9 @@ class Partida:
             jugador_acierta = True
             while jugador_acierta:
                 x,y = ed.coordenada_disparo()
-                if tablero_maquina.disparar(x, y):
+                if tableros_maquina.disparar(x, y):
                     print("¡Acierto! Puedes volver a disparar.")
-                if tablero_maquina.comprobar_todos_hundidos():
+                if tableros_maquina.comprobar_todos_hundidos():
                     print("HAS GANADO!!!")
                     return
                 else:
@@ -53,20 +56,21 @@ class Partida:
             maquina_acierta = True
             while maquina_acierta:
                 mx, my = fn.coordenadas_aleatorias() # mx my maquinas coordenadas
-                if tablero_jugador.disparar(mx, my):
+                if tableros_jugador.disparar(mx, my):
                     print("La máquina acertó. Vuelve a disparar.")
-                if tablero_jugador.comprobar_todos_hundidos():
+                if tableros_jugador.comprobar_todos_hundidos():
                     print("Has perdido. Fin del juego.")
                     return
                 else:
                     print("La máquina falló. Tu turno.")
                     maquina_acierta = False
+## salir del bucle, o el usuario pone salir o hubo un ganador
 
             # Mostrar el estado actual de los tableros
             print("\nEstado actual del juego:")
             print("Tablero del jugador:")
-            tablero_jugador.mostrar_tableros()
+            tableros_jugador.mostrar_tableros()
             print("\nTablero de la máquina (sin mostrar barcos):")
-            tablero_maquina.mostrar_tablero_oculto()
+            tableros_maquina.mostrar_tableros()
         
             turno += 1        
