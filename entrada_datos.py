@@ -1,6 +1,5 @@
-import numpy as np
 import random
-import pandas as pd
+import numpy as np
 from variables import *
 from clases import *
 
@@ -16,7 +15,6 @@ def nombre_jugador():
             return nombre_jugador
         else:
             print("Lo siento, el nombre usuario excede el número de caracteres posibles.")
-
 
 
 # Vamos a recoger las coordenadas de disparo como si fueran una lista:
@@ -45,28 +43,24 @@ def coordenada_disparo():
                 print("Lo siento, esa coordenada no es válida.")
         
 
-# ______________________________________________________________________________________________________
-
 # Para elegir la dificultad vamos a hacer esta funcion:
 
 def dificultad():
-    # dificultad = np.array(["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]) # Le ponemos un nombre a cada dificultad (de más fácil a más difícil)
-    print("Dificultad 1: Marinero \nDificultad 2: Timonel \nDificultad 3: Contramaestre \nDificultad 4: Oficial \nDificultad 5: Capitán") # TODO: pintar con el array de rangos en variables.
+    for index, n in enumerate(RANGOS):
+        print(f"Dificultad {index +1}: {n}")
     no_valido = True
     while no_valido:
         eleccion_dificultad = int(input("Elija la dificultad del 1 al 5: ")) # Le pedimos al sujeto que seleccione la dificultad
-        if eleccion_dificultad <= 5 and eleccion_dificultad >= 1: # Corroboramos que está entre 1 y 5
+        if eleccion_dificultad <= 5 and eleccion_dificultad >= 1: # Comprobamos que está entre 1 y 5
             dificultad_seleccionada = RANGOS[eleccion_dificultad-1]
             print(f"Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
             no_valido = False
-            #TODO: devuelves la dificultad en forma de int
+            return eleccion_dificultad
         else:
             print("Lo siento, no tenemos un cargo para esa dificultad.")
 
 
-# _______________________________________________________________________________________________________
-
-# Genera una coordenada aleatoria para el disparo de la máquina sin repetir
+# Genera una coordenada aleatoria para el disparo de la máquina sin repetir teniendo en cuenta el nivel de dificultad:
 
 def disparo_aleatorio(dificultad, tablero):
     disparo_correcto = False
