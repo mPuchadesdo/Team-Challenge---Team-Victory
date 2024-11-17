@@ -64,10 +64,14 @@ def dificultad():
 
 # _______________________________________________________________________________________________________
 
-# Genera una coordenada aleatoria para el disparo de la máquina
+# Genera una coordenada aleatoria para el disparo de la máquina sin repetir
 
 def coordenada_aleatoria():
     coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2)
+    if any(np.array_equal(coordenada, v) for v in COORDENADAS_MAQUINA_LIST):
+        coordenada_aleatoria()
+    else:
+        COORDENADAS_MAQUINA_LIST.append(coordenada)
     return coordenada
 
 
