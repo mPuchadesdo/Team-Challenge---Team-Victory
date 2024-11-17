@@ -1,4 +1,5 @@
-from variables import TABLERO_LONGITUD, CARACTER_AGUA, CARACTER_BARCO, CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK
+from variables import *
+from entrada_datos import * 
 
 import numpy as np 
 import random
@@ -48,11 +49,6 @@ class Barco:
                 self.set_posiciones(posiciones, direccion)
                 colocado = True
 
-
-    def hundido(self, disparos_pendientes): 
-        if disparos_pendientes == 0: 
-            print("¡Te han hundido el barco!")
-
 #######################################
 
 class Tablero:    
@@ -68,81 +64,51 @@ class Tablero:
         for barco in self.barcos:
             barco.colocar_en_tablero(self.tablero_barcos)
 
-    #def colocar_barcos(self):
-        #for barco in self.barcos:
-            #colocado = False
-            #while not colocado:
-                #direccion = random.choice(['N', 'S', 'E', 'O'])
-                #if direccion == 'E': 
-                    #fila = random.randint(0, TABLERO_LONGITUD - 1)
-                    #columna = random.randint(0, TABLERO_LONGITUD - barco.longitud)
-                    #posiciones = [(fila, columna + i) for i in range(barco.longitud)]
-                #elif direccion == 'O':  
-                    #fila = random.randint(0, TABLERO_LONGITUD - 1)
-                    #columna = random.randint(barco.longitud - 1, TABLERO_LONGITUD - 1)
-                    #posiciones = [(fila, columna - i) for i in range(barco.longitud)]
-                #elif direccion == 'S':  
-                    #fila = random.randint(0, TABLERO_LONGITUD - barco.longitud)
-                    #columna = random.randint(0, TABLERO_LONGITUD - 1)
-                    #posiciones = [(fila + i, columna) for i in range(barco.longitud)]
-                #elif direccion == 'N':  
-                    #fila = random.randint(barco.longitud - 1, TABLERO_LONGITUD - 1)
-                    #columna = random.randint(0, TABLERO_LONGITUD - 1)
-                    #posiciones = [(fila - i, columna) for i in range(barco.longitud)]
+    
+    def disparar(self, fila=None, columna=None):
+        if fila is None or columna is None:  
+            resultado = coordenada_disparo() #TODO: AQUI METO LA FUNCION DE MARIANO
+            fila, columna = resultado  # coordenadas
 
-                #if all(self.tablero_barcos[f][c] == CARACTER_AGUA for f, c in posiciones):
-                    #for f, c in posiciones:
-                        #self.tablero_barcos[f][c] = CARACTER_BARCO
-                    #barco.set_posiciones(posiciones, direccion)
-                    #colocado = True
-
-    def disparar(self, fila = None, columna = None):
-        if fila is None or columna is None:
-            while True:
-                coordenadas = input("Inserta unas coordenadas (ejemplo: 3,4): ")
-
-                try:
-                    # Separar las coordenadas en fila y columna
-                    fila, columna = map(int, coordenadas.split(","))
-
-                    # Comprobar que las coordenadas estén dentro del rango del tablero
-                    if fila < 0 or fila >= TABLERO_LONGITUD or columna < 0 or columna >= TABLERO_LONGITUD:
-                        print(f"Coordenadas fuera del rango del tablero. El tablero es de 0 a {TABLERO_LONGITUD-1}. Intenta nuevamente.")
-                    else:
-                        break  # Salir del bucle si las coordenadas son válidas
-                except ValueError:
-                    print("Entrada no válida. Asegúrate de ingresar dos números separados por una coma.")
-
+        # TODO: tengo que quitar lo de debajo porque esta en is disparo ok? 
         if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
-            print("Ya has disparado a esta posición")
+            return False
 
         elif self.tablero_barcos[fila, columna] == CARACTER_BARCO:
             self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
             self.barcos_restantes -= 1  # Reducimos el número de barcos restantes
             self.total_disparos += 1
-            print(f"¡Has dado a un barco!")
+            return True 
 
         else:
             self.tablero_disparo[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
             self.total_disparos += 1
-            print(f"Mala suerte...¡Agua!")
+            return False
 
+    def is_disparo_ok(self, fila = None, columna = None): 
+        if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
+            return False
 
-    def mostrar_tableros(self):
-        print("Tablero de Barcos")
-        print(self.tablero_barcos)
-        print("Tablero de Disparos")
-        print(self.tablero_disparo)
+        elif self.tablero_barcos[fila, columna] == CARACTER_BARCO:
+            self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
+            self.barcos_restantes -= 1  # Reducimos el número de barcos restantes
+            self.total_disparos += 1
+            return True 
+        else:
+            self.tablero_disparo[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
+            self.total_disparos += 1
+            return False
 
-    def iniciar_partida(self): 
-        print("¡Bienvenido a hundir la flota!")
+    def comprobar_todos_hundidos(self, barcos_restantes): 
+        if barcos_restantes == 0: 
+            return True 
+        else: 
+            return False
 
-        ## igual elegir aquí el nivel de dificultad? 
-
+    def iniciar_tablero(self): 
+        self.tablero_barcos = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)
+        self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
         self.colocar_barcos()
-        self.mostrar_tableros()
-        
-
 
 ############CODIGO DE PRUEBA 
 
@@ -174,7 +140,8 @@ barco10 = Barco(longitud=4)
 # Crear un tablero para un usuario
 tablero = Tablero(usuario="Jugador 1", barcos=[barco1, barco2, barco3, barco4, barco5, barco6, barco7, barco8, barco9, barco10])
 
-tablero.iniciar_partida()
+tablero.iniciar_tablero ()
+
 
 # Colocar los barcos aleatoriamente en el tablero
 #tablero.colocar_barcos()
