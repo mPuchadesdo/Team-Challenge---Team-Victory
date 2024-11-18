@@ -128,7 +128,13 @@ class Tablero:
             return False
     
     def count_celdas_restantes(self): 
-        return 1
+        celdas = np.sum(self.tablero_barcos == CARACTER_BARCO) #crea una matriz 0 si False 1 si true y luego suma los valores de la matriz
+        return celdas
+    
+    def count_total_disparos(self): 
+        disparos = np.sum((self.tablero_barcos == CARACTER_DISPARO_OK) | (self.tablero_barcos == CARACTER_DISPARO_NOK))
+        return disparos
+    #mismo mecanismo, crea una matriz y si los valores son o disparo ok o disparo nok = 1 y sino = 0 y los suma 
 
     def iniciar_tablero(self): 
         self.flota_aleatoria(FLOTA,TABLERO_LONGITUD)

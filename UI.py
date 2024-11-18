@@ -84,7 +84,7 @@ def pintar_tableros(partida):
         print(lineaStr)
 
     #Pintamos los disparos totales y pendientes
-    total_disparos_humano = partida.tablero_maquina.count_total_disparos()
+    total_disparos_humano = partida.tablero_maquina.self.count_total_disparos()
     disparos_pendientes_humano = partida.tablero_maquina.self.count_celdas_restantes()
     total_disparos_maquina = partida.tablero_humano.self.count_total_disparos()
     disparos_pendientes_maquina = partida.tablero_humano.self.count_celdas_restantes()
