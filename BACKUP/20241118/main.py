@@ -1,5 +1,7 @@
+
 import entrada_datos as ed
 import partida as p
+import clases as cd
 import os
 
 os.system('cls')
@@ -11,15 +13,21 @@ Dispara tu contrincante para hundir sus barcos.
 En cada turno, introduce las coordenadas de tu disparo.
 Gana el primero en hundir todos los barcos rivales.
 """)
-
-# Pedimos el nombre del jugador y la dificultad
+      
 nombre = ed.nombre_jugador()
+
 dificultad = ed.dificultad()
 
-# Creación de la partida
 partida = p.Partida(dificultad, nombre)
-
-# Comenzamos la partida
 partida.iniciar_partida()
 
-# Fin de la partida
+# Comenzamos la partida
+
+
+
+
+# mostraremos los tableros de barcos de los dos jugadores para ver cómo han quedado
+
+
+# ¿Quieres terminar de jugar? opción de meter todo en un while que continúe inicializando tableros y barcos para empezar de cero o que con un "NO" lo asigne a False
+print("¿Quieres volver a jugar?")

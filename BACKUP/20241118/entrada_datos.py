@@ -1,6 +1,6 @@
 import random
 import numpy as np
-import variables as var
+import clases as cl
 from variables import *
 
 # Funcion para la introducción del nombre del usuario.
@@ -20,7 +20,6 @@ def nombre_jugador():
 # Vamos a recoger las coordenadas de disparo como si fueran una lista:
 
 def coordenada_disparo():
-    #TODO: Verificar que no se puedan meter cualquier otra cosa que no sea una coordenada o "salir". Si es caracter en blanco, se vuelve a pedir
     no_valido = True
     finalizar_partida = False
     coordenada = ""
@@ -37,7 +36,7 @@ def coordenada_disparo():
             for i in coordenada:
                 lista_coordenada_int.append(int(i))
             coordenada_array = np.array(lista_coordenada_int)
-            if coordenada_array.max() <= var.TABLERO_LONGITUD and coordenada_array.min() >= 0:
+            if coordenada_array.max() <= TABLERO_LONGITUD and coordenada_array.min() >= 0:
                 no_valido = False
                 return lista_coordenada_int
             else:
@@ -47,7 +46,6 @@ def coordenada_disparo():
 # Para elegir la dificultad vamos a hacer esta funcion:
 
 def dificultad():
-    #TODO: Verificar que no se puedan meter cualquier otra cosa que no sea un numero. Si es blanco, volver a pedir
     for index, n in enumerate(RANGOS):
         print(f"Dificultad {index +1}: {n}")
     no_valido = True
@@ -60,3 +58,26 @@ def dificultad():
             return eleccion_dificultad
         else:
             print("Lo siento, no tenemos un cargo para esa dificultad.")
+
+
+# Genera una coordenada aleatoria para el disparo de la máquina sin repetir teniendo en cuenta el nivel de dificultad:
+
+def disparo_aleatorio(dificultad, tablero):
+    disparo_correcto = False
+    d = 1
+    while not disparo_correcto and d <= dificultad:
+        print("d:", d)
+        coordenada_correcta = False
+        d += 1
+        while not coordenada_correcta:
+            coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2) 
+            print(coordenada)
+            if not any(np.array_equal(coordenada, v) for v in COORDENADAS_MAQUINA_LIST):
+                COORDENADAS_MAQUINA_LIST.append(coordenada)
+                coordenada_correcta = True 
+        if tablero.is_disparo_ok(coordenada[0], coordenada[1]):
+            disparo_correcto = True
+    return coordenada    
+
+
+

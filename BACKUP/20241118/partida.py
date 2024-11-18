@@ -1,46 +1,40 @@
 import UI as ui
 import funciones as fn
 import entrada_datos as ed
-import tablero as tbl
+import clases as cl
 import variables as var
-import numpy as np
 
 
 class Partida:
     # Dificultad y nombre del jugador como argumentos
     def __init__(self, dificultad, nombre_jugador):
-        self.tablero_humano = tbl.Tablero(var.TABLERO_LONGITUD, nombre_jugador) # clase Tablero
-        self.tablero_maquina = tbl.Tablero(var.TABLERO_LONGITUD, var.RANGOS[dificultad-1]) # clase Tablero
-
-        self.disparos_maquina = []
-        for fila in range(0,var.TABLERO_LONGITUD):
-            for columna in range(0,var.TABLERO_LONGITUD):
-                self.disparos_maquina.append([fila, columna])
-
-
+        self.tablero_humano = cl.Tablero(nombre_jugador) # clase Tablero
+        self.tablero_maquina = cl.Tablero(var.RANGOS[dificultad-1]) # clase Tablero
         self.dificultad = dificultad
-        self.turno = 1
-
         self.mensajes_turno_humano = []
         self.mensajes_turno_maquina = []
+        self.turno = 1
     
 
     def iniciar_partida(self):
         # Crea los tableros y coloca barcos
         self.tablero_humano.iniciar_tablero()
         self.tablero_maquina.iniciar_tablero()
+        self.gestion_turnos()
 
-
+    def gestion_turnos(self):
         fin_de_partida = False
         ui.pintar_tableros(self)
         while not fin_de_partida:
             self.mensajes_turno_humano = []
             self.mensajes_turno_maquina = []
+            print(f"TURNO {self.turno}")
 
-            # Tirada del humano
+            # Turno del jugador 1
             jugador_acierta = True
             while jugador_acierta and not fin_de_partida:
                 coordenada = ed.coordenada_disparo()
+                print(coordenada)
                 if coordenada == True:
                     mensaje = "Has seleccionado salir de la partida"
                     self.mensajes_turno_humano.append(mensaje)
@@ -50,7 +44,6 @@ class Partida:
                     if self.tablero_maquina.disparar(coordenada[0]-1, coordenada[1]-1):
                         mensaje += "¡Acierto! Puedes volver a disparar."
                     else:
-                        #TODO: Cuando se dispara a un punto ya disparado, se pone como AGUA
                         mensaje += "Agua.Cambio de turno"
                         jugador_acierta = False
                     self.mensajes_turno_humano.append(mensaje)
@@ -60,11 +53,11 @@ class Partida:
                         self.mensajes_turno_humano.append("HAS GANADO!!!")
                         fin_de_partida = True
                     ui.pintar_tableros(self)
-
             # Turno de la máquina
             maquina_acierta = True
             while maquina_acierta and not fin_de_partida:
-                coordenada = self.disparo_aleatorio()
+                coordenada = ed.disparo_aleatorio(self.dificultad, self.tablero_humano)
+                print(coordenada)
                 mensaje = f"{coordenada[0]}, {coordenada[1]} "
                 if self.tablero_humano.disparar(coordenada[0], coordenada[1]):
                     mensaje += "¡Acierto! Puedes volver a disparar."
@@ -76,26 +69,9 @@ class Partida:
                 if self.tablero_humano.comprobar_todos_hundidos():
                         self.mensajes_turno_maquina.append(f"El {var.RANGOS[self.dificultad-1]} ha ganado la partida!!!")
                         fin_de_partida = True
+               
+## salir del bucle, o el usuario pone salir o hubo un ganador
 
             ui.pintar_tableros(self)
+        
             self.turno += 1        
-
-
-    # Genera una coordenada aleatoria para el disparo de la máquina sin repetir teniendo en cuenta el nivel de dificultad:
-    def disparo_aleatorio(self):
-        disparo_correcto = False
-        d = 1
-        while not disparo_correcto and d <= self.dificultad:
-            d += 1
-            
-            posicion = np.random.randint(0, len(self.disparos_maquina))        
-
-            fila = self.disparos_maquina[posicion][0]
-            columna = self.disparos_maquina[posicion][1]
-            coordenada = [fila, columna]
-
-            self.disparos_maquina.remove(coordenada)
-
-            if self.tablero_humano.is_disparo_ok(fila, columna):
-                disparo_correcto = True
-        return coordenada    

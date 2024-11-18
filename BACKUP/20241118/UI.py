@@ -62,9 +62,10 @@ def get_totales(total_caracteres, total_disparos, disparos_pendientes):
 def pintar_tableros(partida):
     
     os.system('cls')
+    #Sustituir por los nombbres de las variables de los tableros de las partidas
     array_tableroJ1 = get_tablero_string(partida.tablero_humano.tablero_barcos)
-    array_tableroJ2 = get_tablero_string(partida.tablero_maquina.tablero_barcos, True)
-
+    #array_tableroJ2 = get_tablero_string(partida.tablero_maquina.tablero_barcos, True)
+    array_tableroJ2 = get_tablero_string(partida.tablero_maquina.tablero_barcos)
     len_linea_tablero = len(array_tableroJ1[0])
     separador_tableros = " " * var.NUM_CARACTERES_SEPARACION_TABLEROS
 
@@ -83,16 +84,16 @@ def pintar_tableros(partida):
         print(lineaStr)
 
     #Pintamos los disparos totales y pendientes
-    total_disparos_humano = partida.tablero_maquina.count_total_disparos()
-    disparos_pendientes_humano = partida.tablero_maquina.count_celdas_restantes()
-    total_disparos_maquina = partida.tablero_humano.count_total_disparos()
-    disparos_pendientes_maquina = partida.tablero_humano.count_celdas_restantes()
+    total_disparos_humano = partida.tablero_maquina.self.count_total_disparos()
+    disparos_pendientes_humano = partida.tablero_maquina.self.count_celdas_restantes()
+    total_disparos_maquina = partida.tablero_humano.self.count_total_disparos()
+    disparos_pendientes_maquina = partida.tablero_humano.self.count_celdas_restantes()
 
-    str_total_humano, str_pendientes_humano = get_totales(len_linea_tablero, total_disparos_humano, disparos_pendientes_humano)
-    str_total_maquina, str_pendientes_maquina = get_totales(len_linea_tablero, total_disparos_maquina, disparos_pendientes_maquina)
+    str_total_1, str_pendientes_1 = get_totales(len_linea_tablero, total_disparos_humano, disparos_pendientes_humano)
+    str_total_2, str_pendientes_2 = get_totales(len_linea_tablero, total_disparos_maquina, disparos_pendientes_maquina)
 
-    print(str_total_maquina + separador_tableros + str_total_humano)
-    print(str_pendientes_maquina + separador_tableros + str_pendientes_humano)
+    print(str_total_1 + separador_tableros + str_total_2)
+    print(str_pendientes_1 + separador_tableros + str_pendientes_2)
 
     #Pintar mensaje resultado de los disparos de cada turno
     mensajes = [len(partida.mensajes_turno_humano), len(partida.mensajes_turno_maquina)]
