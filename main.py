@@ -1,8 +1,7 @@
 
-from entrada_datos import *
-from pruebas.objetos import *
+import entrada_datos as ed
 import partida as p
-from clases import *
+import clases as cd
 
 
 print("""
@@ -13,9 +12,9 @@ En cada turno, introduce las coordenadas de tu disparo.
 Gana el primero en hundir todos los barcos rivales.
 """)
       
-nombre = nombre_jugador()
+nombre = ed.nombre_jugador()
 
-dificultad = dificultad()
+dificultad = ed.dificultad()
 
 #partida = p.Partida(dificultad, nombre)
 #partida.iniciar_partida()
