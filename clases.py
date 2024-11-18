@@ -52,31 +52,63 @@ class Barco:
 #######################################
 
 class Tablero:    
-    def __init__(self,usuario,barcos): 
-        self.usuario = usuario
-        self.barcos = barcos   
+    def __init__(self,usuario): 
+        self.usuario = usuario 
         self.tablero_barcos = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)  # Tablero donde se colocan los barcos
-        self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
-        self.celdas_restantes = sum(len(barcos))  # Número total de barcos en el tablero
-        self.total_disparos = 0 
-        
-    def colocar_barcos(self):
-        for barco in self.barcos:
-            barco.colocar_en_tablero(self.tablero_barcos)
+    
+    def flota_aleatoria(self, flota, TABLERO_LONGITUD):
+        filas = columnas = TABLERO_LONGITUD
+        coordenadas = []
+        for eslora, unidades in flota.items():
+            for i in range(unidades):
+                encaje = False
+                while not encaje:
+                    # Escoge orientación y posición inicial aleatoriamente
+                    orientacion = random.choice(["N", "S", "E", "O"])
+                    coord_barco = [random.randint(0, filas - 1), random.randint(0, columnas - 1)]
+                    n_ref, k_ref = coord_barco
 
+                    # Define coord_barco según la orientación
+                    if eslora > 1:
+                        if orientacion == "N":
+                            coord_barco = [(n_ref - i, k_ref) for i in range(eslora)]
+                        elif orientacion == "S":
+                            coord_barco = [(n_ref + i, k_ref) for i in range(eslora)]
+                        elif orientacion == "E":
+                            coord_barco = [(n_ref, k_ref + i) for i in range(eslora)]
+                        elif orientacion == "O":
+                            coord_barco = [(n_ref, k_ref - i) for i in range(eslora)]
+                    # Verifica si todas las posiciones de coord_barco están dentro del tablero y libres
+                    encaje = True  # Asumimos que encajará, pero verificamos
+                    for pieza in coord_barco:
+                        # Condiciones de borde
+                        condicion_n = 0 <= pieza[0] < filas
+                        condicion_k = 0 <= pieza[1] < columnas
+                        if not (condicion_n and condicion_k):
+                            encaje = False  # Si está fuera del tablero, encaje es False
+                            break  # Salimos del bucle for, reintentamos otra posición
+                        
+                        # Solo si estamos seguros de que está dentro, revisamos si está ocupado
+                        for lista_barco in coordenadas:
+                            for pieza_otro_barco in lista_barco:
+                                if pieza_otro_barco == pieza:
+                                    encaje = False
+                                    break
+                coordenadas.append(coord_barco)
+                for pieza in coord_barco: 
+                    self.tablero[pieza[0], pieza[1]] = CARACTER_BARCO   
     
     def disparar(self, fila=None, columna=None):
         if fila is None or columna is None:  
-            resultado = coordenada_disparo() #TODO: AQUI METO LA FUNCION DE MARIANO
+            resultado = coordenada_disparo()
             fila, columna = resultado  # coordenadas
 
-        # TODO: tengo que quitar lo de debajo porque esta en is disparo ok? 
         if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
             return False
 
         elif self.tablero_barcos[fila, columna] == CARACTER_BARCO:
             self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
-            self.celdas_restantes -= 1  # Reducimos el número de barcos restantes
+            #self.celdas_restantes -= 1  # Reducimos el número de barcos restantes
             self.total_disparos += 1
             return True 
 
@@ -92,66 +124,14 @@ class Tablero:
         else: 
             return False 
         
-    def comprobar_todos_hundidos(self, celdas_restantes): 
-        if celdas_restantes == 0: 
+    def comprobar_todos_hundidos(self): 
+        if CARACTER_BARCO not in self.tablero_barcos: 
             return True 
         else: 
-            return False
+            celdas_restantes = sum(CARACTER_BARCO in self.tablero_barcos)
+            return celdas_restantes
 
     def iniciar_tablero(self): 
-        self.tablero_barcos = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)
-        self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
-        self.colocar_barcos()
+        self.flota_aleatoria()
+    
 
-
-############CODIGO DE PRUEBA 
-
-from variables import TABLERO_LONGITUD, CARACTER_AGUA, CARACTER_BARCO, CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK
-import random
-import numpy as np
-
-#TABLERO_LONGITUD = 10  
-#CARACTER_AGUA = '~'
-#CARACTER_BARCO = 'X'
-#CARACTER_DISPARO_OK = '*'
-#CARACTER_DISPARO_NOK = '-'
-
-# Crear algunos barcos (por ejemplo, uno de tamaño 3 y otro de tamaño 4)
-barco1 = Barco(longitud=1)
-barco2 = Barco(longitud=1)
-barco3 = Barco(longitud=1)
-barco4 = Barco(longitud=1)
-
-barco5 = Barco(longitud=2)
-barco6= Barco(longitud=2)
-barco7= Barco(longitud=2)
-
-barco8= Barco(longitud=3)
-barco9 = Barco(longitud=3)
-
-barco10 = Barco(longitud=4)
-
-# Crear un tablero para un usuario
-tablero = Tablero(usuario="Jugador 1", barcos=[barco1, barco2, barco3, barco4, barco5, barco6, barco7, barco8, barco9, barco10])
-
-tablero.iniciar_tablero ()
-
-
-# Colocar los barcos aleatoriamente en el tablero
-#tablero.colocar_barcos()
-
-# Mostrar el estado de los tableros
-#tablero.mostrar_tableros()
-
-# Realizar algunos disparos
-print("\nDisparando a la posición...")
-tablero.disparar()
-
-print("\nDisparando a la posición ...")
-tablero.disparar()
-
-print("\nDisparando a la posición...")
-tablero.disparar()
-
-# Mostrar el estado de los tableros después de los disparos
-tablero.mostrar_tableros()
