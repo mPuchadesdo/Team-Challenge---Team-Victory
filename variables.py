@@ -21,3 +21,9 @@ COORDENADAS_MAQUINA_LIST = []
 
 #Rangos de dificultad
 RANGOS = ["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]
+
+#Flota de barcos
+FLOTA = {4: 1, 
+         3: 2,
+         2: 3,
+         1: 4}

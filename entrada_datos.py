@@ -1,7 +1,7 @@
 import random
 import numpy as np
+import clases as cl
 from variables import *
-from clases import *
 
 # Funcion para la introducción del nombre del usuario.
 
@@ -73,7 +73,7 @@ def disparo_aleatorio(dificultad, tablero):
             if not any(np.array_equal(coordenada, v) for v in COORDENADAS_MAQUINA_LIST):
                 COORDENADAS_MAQUINA_LIST.append(coordenada)
                 coordenada_correcta = True 
-        if tablero.es_disparo_ok(coordenada[0], coordenada[1]):
+        if tablero.is_disparo_ok(coordenada[0], coordenada[1]):
             disparo_correcto = True
     return coordenada    
 
