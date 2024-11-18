@@ -1,7 +1,8 @@
-from clases import *
+
 from entrada_datos import *
 from pruebas.objetos import *
 import partida as p
+from clases import *
 
 
 print("""
@@ -16,8 +17,8 @@ nombre = nombre_jugador()
 
 dificultad = dificultad()
 
-partida = p.Partida(dificultad, nombre)
-partida.iniciar_partida()
+#partida = p.Partida(dificultad, nombre)
+#partida.iniciar_partida()
 
 # Comenzamos la partida
 

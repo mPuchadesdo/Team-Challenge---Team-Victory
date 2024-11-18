@@ -57,7 +57,7 @@ class Tablero:
         self.barcos = barcos   
         self.tablero_barcos = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)  # Tablero donde se colocan los barcos
         self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
-        self.barcos_restantes = len(barcos)  # Número total de barcos en el tablero
+        self.celdas_restantes = sum(len(barcos))  # Número total de barcos en el tablero
         self.total_disparos = 0 
         
     def colocar_barcos(self):
@@ -76,7 +76,7 @@ class Tablero:
 
         elif self.tablero_barcos[fila, columna] == CARACTER_BARCO:
             self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
-            self.barcos_restantes -= 1  # Reducimos el número de barcos restantes
+            self.celdas_restantes -= 1  # Reducimos el número de barcos restantes
             self.total_disparos += 1
             return True 
 
@@ -86,21 +86,14 @@ class Tablero:
             return False
 
     def is_disparo_ok(self, fila = None, columna = None): 
-        if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
-            return False
-
-        elif self.tablero_barcos[fila, columna] == CARACTER_BARCO:
-            self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
-            self.barcos_restantes -= 1  # Reducimos el número de barcos restantes
-            self.total_disparos += 1
+        if self.tablero_barcos[fila, columna] == CARACTER_BARCO:  # has dado a un barco
             return True 
-        else:
-            self.tablero_disparo[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
-            self.total_disparos += 1
-            return False
-
-    def comprobar_todos_hundidos(self, barcos_restantes): 
-        if barcos_restantes == 0: 
+        
+        else: 
+            return False 
+        
+    def comprobar_todos_hundidos(self, celdas_restantes): 
+        if celdas_restantes == 0: 
             return True 
         else: 
             return False
@@ -109,6 +102,7 @@ class Tablero:
         self.tablero_barcos = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), CARACTER_AGUA)
         self.tablero_disparo = np.full((TABLERO_LONGITUD, TABLERO_LONGITUD), " ")
         self.colocar_barcos()
+
 
 ############CODIGO DE PRUEBA 
 

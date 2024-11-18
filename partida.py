@@ -1,18 +1,15 @@
-from clases import *
-from pruebas.objetos import *
 from main import *
 from grafico import *
 import funciones as fn
 import entrada_datos as ed
-
+import clases as cl
 
 
 class Partida:
     # Dificultad y nombre del jugador como argumentos
     def __init__(self, dificultad, nombre_jugador):
         self.tablero_humano = Tablero(nombre_jugador) # clase Tablero
-        self.tablero_maquina = Tablero("Maquina") # clase Tablero
-        self.turno = "Jugador"
+        self.tablero_maquina = Tablero(RANGOS[dificultad-1]) # clase Tablero
         self.dificultad = dificultad
         self.mensajes_turno_humano = []
         self.mensajes_turno_maquina = []
@@ -20,8 +17,8 @@ class Partida:
 
     def iniciar_partida(self):
         # Crea los tableros y coloca barcos
-        self.tablero_humano.iniciar_tablero()
-        self.tablero_maquina.iniciar_tablero()
+        self.tablero_humano.cl.iniciar_tablero()
+        self.tablero_maquina.cl.iniciar_tablero()
         self.gestion_turnos()
 
         # self.tablero_humano.colocar_barcos()
@@ -41,6 +38,7 @@ class Partida:
     def gestion_turnos(self):
         fin_de_partida = False
         turno = 1
+        pintar_tableros()
         while not fin_de_partida:
             self.mensajes_turno_humano = []
             self.mensajes_turno_maquina = []
