@@ -66,10 +66,12 @@ def disparo_aleatorio(dificultad, tablero):
     disparo_correcto = False
     d = 1
     while not disparo_correcto and d <= dificultad:
+        print("d:", d)
         coordenada_correcta = False
         d += 1
         while not coordenada_correcta:
-            coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2)
+            coordenada = np.random.randint(0, (TABLERO_LONGITUD-1), size = 2) 
+            print(coordenada)
             if not any(np.array_equal(coordenada, v) for v in COORDENADAS_MAQUINA_LIST):
                 COORDENADAS_MAQUINA_LIST.append(coordenada)
                 coordenada_correcta = True 

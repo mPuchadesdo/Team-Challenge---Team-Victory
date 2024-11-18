@@ -2,7 +2,9 @@
 import entrada_datos as ed
 import partida as p
 import clases as cd
+import os
 
+os.system('cls')
 
 print("""
 Bienvenid@
@@ -16,8 +18,8 @@ nombre = ed.nombre_jugador()
 
 dificultad = ed.dificultad()
 
-#partida = p.Partida(dificultad, nombre)
-#partida.iniciar_partida()
+partida = p.Partida(dificultad, nombre)
+partida.iniciar_partida()
 
 # Comenzamos la partida
 

@@ -63,9 +63,9 @@ def pintar_tableros(partida):
     
     os.system('cls')
     #Sustituir por los nombbres de las variables de los tableros de las partidas
-    array_tableroJ1 = get_tablero_string(partida.tablero_humano)
-    array_tableroJ2 = get_tablero_string(partida.tablero_maquina, True)
-
+    array_tableroJ1 = get_tablero_string(partida.tablero_humano.tablero_barcos)
+    #array_tableroJ2 = get_tablero_string(partida.tablero_maquina.tablero_barcos, True)
+    array_tableroJ2 = get_tablero_string(partida.tablero_maquina.tablero_barcos)
     len_linea_tablero = len(array_tableroJ1[0])
     separador_tableros = " " * var.NUM_CARACTERES_SEPARACION_TABLEROS
 
@@ -73,9 +73,9 @@ def pintar_tableros(partida):
     print(f"TURNO: {partida.turno}")
 
     #Pintar nombbre de los jugadores
-    cabecera = f"J1:{partida.nombre_jugador_humano}"
+    cabecera = f"J1:{partida.tablero_humano.usuario}"
     cabecera += get_relleno_cadena(len_linea_tablero, cabecera) + separador_tableros 
-    cabecera += f"J2:{partida.nombre_jugador_maquina}"
+    cabecera += f"J2:{partida.tablero_maquina.usuario}"
     print(cabecera)
 
     #Pintar tableros
@@ -84,10 +84,10 @@ def pintar_tableros(partida):
         print(lineaStr)
 
     #Pintamos los disparos totales y pendientes
-    total_disparos_humano = 10
-    disparos_pendientes_humano = 8
-    total_disparos_maquina = 5
-    disparos_pendientes_maquina = 13
+    total_disparos_humano = partida.tablero_maquina.count_total_disparos()
+    disparos_pendientes_humano = partida.tablero_maquina.self.count_celdas_restantes()
+    total_disparos_maquina = partida.tablero_humano.self.count_total_disparos()
+    disparos_pendientes_maquina = partida.tablero_humano.self.count_celdas_restantes()
 
     str_total_1, str_pendientes_1 = get_totales(len_linea_tablero, total_disparos_humano, disparos_pendientes_humano)
     str_total_2, str_pendientes_2 = get_totales(len_linea_tablero, total_disparos_maquina, disparos_pendientes_maquina)
@@ -99,20 +99,16 @@ def pintar_tableros(partida):
     mensajes = [len(partida.mensajes_turno_humano), len(partida.mensajes_turno_maquina)]
 
     print()
-    mensaje = f"--- J1 DISPAROS TURNO {turno} ---"
+    mensaje = f"--- J1 DISPAROS TURNO {partida.turno} ---"
     mensaje += get_relleno_cadena(len_linea_tablero, mensaje) + separador_tableros
-    mensaje += f"--- J2 DISPAROS TURNO {turno} ---"
+    mensaje += f"--- J2 DISPAROS TURNO {partida.turno} ---"
     print(mensaje)
 
     for idx in range(0, max(mensajes)):
         mensaje = ""
         if idx < len(partida.mensajes_turno_humano):
-            mensaje = " >" + partida.partida.mensajes_turno_humano[idx]
+            mensaje = " >" + partida.mensajes_turno_humano[idx]
         if idx < len(partida.mensajes_turno_maquina):
             mensaje += get_relleno_cadena(len_linea_tablero, mensaje) + separador_tableros + " >" + partida.mensajes_turno_maquina[idx]
         print(mensaje)
     print()
-
-partida = Partida(1, "Humano")
-
-pintar_tableros(partida)

@@ -1,6 +1,5 @@
 from variables import *
 from entrada_datos import * 
-
 import numpy as np 
 import random
 
@@ -67,6 +66,7 @@ class Tablero:
                     orientacion = random.choice(["N", "S", "E", "O"])
                     coord_barco = [random.randint(0, filas - 1), random.randint(0, columnas - 1)]
                     n_ref, k_ref = coord_barco
+                    print(coord_barco)
 
                     # Define coord_barco según la orientación
                     if eslora > 1:
@@ -78,6 +78,7 @@ class Tablero:
                             coord_barco = [(n_ref, k_ref + i) for i in range(eslora)]
                         elif orientacion == "O":
                             coord_barco = [(n_ref, k_ref - i) for i in range(eslora)]
+                    print(coord_barco)
                     # Verifica si todas las posiciones de coord_barco están dentro del tablero y libres
                     encaje = True  # Asumimos que encajará, pero verificamos
                     for pieza in coord_barco:
@@ -96,25 +97,21 @@ class Tablero:
                                     break
                 coordenadas.append(coord_barco)
                 for pieza in coord_barco: 
-                    self.tablero[pieza[0], pieza[1]] = CARACTER_BARCO   
+                    self.tablero_barcos[pieza[0], pieza[1]] = CARACTER_BARCO   
     
     def disparar(self, fila=None, columna=None):
         if fila is None or columna is None:  
-            resultado = coordenada_disparo()
-            fila, columna = resultado  # coordenadas
+            return False
 
-        if self.tablero_disparo[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
+        if self.tablero_barcos[fila, columna] in [CARACTER_DISPARO_OK, CARACTER_DISPARO_NOK]:
             return False
 
         elif self.tablero_barcos[fila, columna] == CARACTER_BARCO:
-            self.tablero_disparo[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
-            #self.celdas_restantes -= 1  # Reducimos el número de barcos restantes
-            self.total_disparos += 1
+            self.tablero_barcos[fila, columna] = CARACTER_DISPARO_OK  # has dado a un barco
             return True 
 
         else:
-            self.tablero_disparo[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
-            self.total_disparos += 1
+            self.tablero_barcos[fila, columna] = CARACTER_DISPARO_NOK  # has dado a agua
             return False
 
     def is_disparo_ok(self, fila = None, columna = None): 
@@ -128,10 +125,12 @@ class Tablero:
         if CARACTER_BARCO not in self.tablero_barcos: 
             return True 
         else: 
-            celdas_restantes = sum(CARACTER_BARCO in self.tablero_barcos)
-            return celdas_restantes
+            return False
+    
+    def count_celdas_restantes(self): 
+        return 1
 
     def iniciar_tablero(self): 
-        self.flota_aleatoria()
+        self.flota_aleatoria(FLOTA,TABLERO_LONGITUD)
     
 

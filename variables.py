@@ -24,6 +24,6 @@ RANGOS = ["Marinero", "Timonel", "Contramaestre", "Oficial", "Capitán"]
 
 #Flota de barcos
 FLOTA = {4: 1, 
-         3: 2,
-         2: 3,
-         1: 4}
+         3: 1,
+         2: 1,
+         2: 1}
