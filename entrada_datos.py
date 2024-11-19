@@ -8,11 +8,11 @@ from variables import *
 def continuar_partida():
     preguntar_salir = False
     while not preguntar_salir:
-        continuar = input("¿Quieres volver a jugar (S/N)? ").lower().replace(" ","")
-        preguntar_salir = continuar in ["s","n"]
-        if preguntar_salir:
-            return continuar == "s"
-        print("No te entiendo!")
+        continuar = input("¿Quieres volver a jugar (S/N)? ").lower().replace(" ","") # Preguntamos y limpiamos la entrada
+        preguntar_salir = continuar in ["s","n"] # Controlamos que la respuesta sea válida
+        if preguntar_salir: 
+            return continuar == "s" # Si la respuesta ha sido s, devolvemos un True para volver a jugar y si ha sido n, devolvemos un False y finaliza el programa
+        print("¡No te entiendo!")
     return False
 
 
@@ -36,8 +36,7 @@ def coordenada_disparo():
     finalizar_partida = False
     coordenada = ""
     while no_valido:
-        coordenada = input("Por favor, introduzca la coordenada a la que quiere disparar (escribe 'salir' para finalizar): ")
-        coordenada = coordenada.replace(" ", "") # Limpiamos todos los espacios del input
+        coordenada = input("Por favor, introduzca la coordenada a la que quiere disparar (escribe 'salir' para finalizar): ").replace(" ", "") # Limpiamos todos los espacios del input
         lista_coordenada_int = [] # Creamos una lista vacia en la que meteremos ints en vez de str
         if coordenada == "salir":
             no_valido = False
@@ -47,30 +46,29 @@ def coordenada_disparo():
             try:
                 coordenada = coordenada.split(",") # Separamos el string utilizando la coma y convirtiendo el input en una lista de 2 items
                 for i in coordenada:
-                    lista_coordenada_int.append(int(i))
-                coordenada_array = np.array(lista_coordenada_int)                
+                    lista_coordenada_int.append(int(i)) # Añadimos en una lista el input pero en forma de int
+                coordenada_array = np.array(lista_coordenada_int) # Creamos un array de numpy para utilizar max() y min()             
                 if coordenada_array.max() <= var.TABLERO_LONGITUD and coordenada_array.min() >= 0:
                     no_valido = False
                     return lista_coordenada_int
                 else:
                     print("Lo siento, esa coordenada no existe en el tablero.")
             except:
-                print("La coordenada indicada no es válida")
+                print("La coordenada indicada no es válida.")
         
 
 # Para elegir la dificultad vamos a hacer esta función:
 
 def dificultad():
-    for index, n in enumerate(RANGOS):
+    for index, n in enumerate(var.RANGOS): # Enseñamos por pantalla las diferentes dificultades y sus rangos
         print(f"Dificultad {index +1}: {n}")
     input_valido = False
     while not input_valido:
-        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ").replace(" ","") # Le pedimos al sujeto que seleccione la dificultad 
-        if eleccion_dificultad not in ["1","2","3","4","5"]:
-            input_valido = False
-            print("Lo siento, no tenemos un cargo para esa dificultad.")
-        else:
-            dificultad_seleccionada = RANGOS[int(eleccion_dificultad)-1]    
-            print(f"Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
+        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ").replace(" ","") # Le pedimos al sujeto que seleccione la dificultad (eliminando espacios)
+        try: # Con un try-except nos aseguramos de que, en caso de no introducir un número del 1 al 5, el programa no de error
+            dificultad_seleccionada = var.RANGOS[int(eleccion_dificultad)-1] # Seleccionamos el nombre del rango    
+            print(f"¡Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
             input_valido = True
             return int(eleccion_dificultad)
+        except:
+            print("Lo siento, no te entiendo.")
