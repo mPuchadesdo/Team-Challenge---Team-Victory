@@ -1,5 +1,4 @@
 import UI as ui
-import funciones as fn
 import entrada_datos as ed
 import tablero as tbl
 import variables as var
