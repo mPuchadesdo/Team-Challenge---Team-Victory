@@ -47,11 +47,14 @@ class Partida:
                     fin_de_partida = True
                 else:
                     mensaje = f"{coordenada[0]}, {coordenada[1]} " 
-                    if self.tablero_maquina.disparar(coordenada[0]-1, coordenada[1]-1):
+                    disparo = self.tablero_maquina.disparar(coordenada[0]-1, coordenada[1]-1)
+                    if disparo == 1:
                         mensaje += "¡Acierto! Puedes volver a disparar."
-                    else:
+                    elif disparo == 2:
+                        mensaje += "Posición ya disparada. Cambio de turno."
                         #TODO: Cuando se dispara a un punto ya disparado, se pone como AGUA
-                        mensaje += "Agua.Cambio de turno"
+                    else:
+                        mensaje += "Agua. Cambio de turno"
                         jugador_acierta = False
                     self.mensajes_turno_humano.append(mensaje)
                     
@@ -66,10 +69,11 @@ class Partida:
             while maquina_acierta and not fin_de_partida:
                 coordenada = self.disparo_aleatorio()
                 mensaje = f"{coordenada[0]}, {coordenada[1]} "
-                if self.tablero_humano.disparar(coordenada[0], coordenada[1]):
+                disparo = self.tablero_humano.disparar(coordenada[0], coordenada[1])
+                if disparo == 1:
                     mensaje += "¡Acierto! Puedes volver a disparar."
                 else:
-                    mensaje += "Agua.Cambio de turno"
+                    mensaje += "Agua. Cambio de turno"
                     maquina_acierta = False
                 self.mensajes_turno_maquina.append(mensaje) 
 

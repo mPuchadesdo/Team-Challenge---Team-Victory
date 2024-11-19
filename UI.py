@@ -63,6 +63,7 @@ def pintar_tableros(partida):
     
     os.system('cls')
     array_tableroJ1 = get_tablero_string(partida.tablero_humano.tablero_barcos)
+    # Mostrar el tablero de la máquina
     array_tableroJ2 = get_tablero_string(partida.tablero_maquina.tablero_barcos, True)
 
     len_linea_tablero = len(array_tableroJ1[0])

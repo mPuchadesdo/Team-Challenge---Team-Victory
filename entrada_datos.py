@@ -5,6 +5,20 @@ from variables import *
 
 # Funcion para la introducción del nombre del usuario.
 
+def continuar_partida():
+    preguntar_salir = False
+    while not preguntar_salir:
+
+        continuar = input("¿Quieres volver a jugar (S/N)? ").lower().replace(" ","")
+        preguntar_salir = continuar in ["s","n"]
+        if preguntar_salir:
+            return continuar == "s"
+        print("No te entiendo!")
+    
+    return False
+
+
+
 def nombre_jugador():
     no_valido = True
     nombre_jugador = ""
@@ -33,15 +47,18 @@ def coordenada_disparo():
             finalizar_partida = True
             return finalizar_partida
         else:
-            coordenada = coordenada.split(",") # Separamos el string utilizando la coma y convirtiendo el input en una lista de 2 items
-            for i in coordenada:
-                lista_coordenada_int.append(int(i))
-            coordenada_array = np.array(lista_coordenada_int)
-            if coordenada_array.max() <= var.TABLERO_LONGITUD and coordenada_array.min() >= 0:
-                no_valido = False
-                return lista_coordenada_int
-            else:
-                print("Lo siento, esa coordenada no es válida.")
+            try:
+                coordenada = coordenada.split(",") # Separamos el string utilizando la coma y convirtiendo el input en una lista de 2 items
+                for i in coordenada:
+                    lista_coordenada_int.append(int(i))
+                coordenada_array = np.array(lista_coordenada_int)                
+                if coordenada_array.max() <= var.TABLERO_LONGITUD and coordenada_array.min() >= 0:
+                    no_valido = False
+                    return lista_coordenada_int
+                else:
+                    print("Lo siento, esa coordenada no es válida.")
+            except:
+                print("La coordenada indicada no es válida")
         
 
 # Para elegir la dificultad vamos a hacer esta funcion:
@@ -51,7 +68,7 @@ def dificultad():
         print(f"Dificultad {index +1}: {n}")
     input_valido = False
     while not input_valido:
-        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ") # Le pedimos al sujeto que seleccione la dificultad 
+        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ").replace(" ","") # Le pedimos al sujeto que seleccione la dificultad 
         if eleccion_dificultad not in ["1","2","3","4","5"]:
             input_valido = False
             print("Lo siento, no tenemos un cargo para esa dificultad.")

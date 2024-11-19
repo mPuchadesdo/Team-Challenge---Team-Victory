@@ -53,19 +53,20 @@ class Tablero:
                     self.tablero_barcos[pieza[0], pieza[1]] = var.CARACTER_BARCO   
     
     def disparar(self, fila=None, columna=None):
+        # 0 = Agua,  1 = Disparo correco, 2 = Ya disparado
         if fila is None or columna is None:  
-            return False
+            return 0
 
         if self.tablero_barcos[fila, columna] in [var.CARACTER_DISPARO_OK, var.CARACTER_DISPARO_NOK]:
-            return False
+            return 2
 
         elif self.tablero_barcos[fila, columna] == var.CARACTER_BARCO:
             self.tablero_barcos[fila, columna] = var.CARACTER_DISPARO_OK  # has dado a un barco
-            return True 
+            return 1 
 
         else:
             self.tablero_barcos[fila, columna] = var.CARACTER_DISPARO_NOK  # has dado a agua
-            return False
+            return 0
 
     def is_disparo_ok(self, fila = None, columna = None): 
         if self.tablero_barcos[fila, columna] == var.CARACTER_BARCO:  # has dado a un barco
