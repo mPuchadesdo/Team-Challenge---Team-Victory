@@ -3,38 +3,35 @@ import numpy as np
 import variables as var
 from variables import *
 
-# Funcion para la introducción del nombre del usuario.
+# Función para continuar o no la partida:
 
 def continuar_partida():
     preguntar_salir = False
     while not preguntar_salir:
-
         continuar = input("¿Quieres volver a jugar (S/N)? ").lower().replace(" ","")
         preguntar_salir = continuar in ["s","n"]
         if preguntar_salir:
             return continuar == "s"
         print("No te entiendo!")
-    
     return False
 
 
+# Función para la introducción del nombre del usuario:
 
 def nombre_jugador():
     no_valido = True
-    nombre_jugador = ""
     while no_valido:
         nombre_jugador = input("Por favor, introduzca el nombre de usuario (máximo 15 caracteres): ")
-        if len(nombre_jugador) <= 15: # Debe tener un máximo de 15 caracteres de longitud
+        if 0 < len(nombre_jugador) <= 15: # # Debe tener un mínimo de 1 caracter de longitud y un máximo de 15
             no_valido = False
             return nombre_jugador
         else:
-            print("Lo siento, el nombre usuario excede el número de caracteres posibles.")
+            print("Lo siento, el nombre usuario no es válido.")
 
 
 # Vamos a recoger las coordenadas de disparo como si fueran una lista:
 
 def coordenada_disparo():
-    #TODO: Verificar que no se puedan meter cualquier otra cosa que no sea una coordenada o "salir". Si es caracter en blanco, se vuelve a pedir
     no_valido = True
     finalizar_partida = False
     coordenada = ""
@@ -56,12 +53,12 @@ def coordenada_disparo():
                     no_valido = False
                     return lista_coordenada_int
                 else:
-                    print("Lo siento, esa coordenada no es válida.")
+                    print("Lo siento, esa coordenada no existe en el tablero.")
             except:
                 print("La coordenada indicada no es válida")
         
 
-# Para elegir la dificultad vamos a hacer esta funcion:
+# Para elegir la dificultad vamos a hacer esta función:
 
 def dificultad():
     for index, n in enumerate(RANGOS):

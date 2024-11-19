@@ -7,11 +7,11 @@ os.system('cls')
 print("""
 Bienvenid@
 
-Dispara tu contrincante para hundir sus barcos. 
+Dispara a tu contrincante para hundir sus barcos. 
 En cada turno, introduce las coordenadas de tu disparo.
 Gana el primero en hundir todos los barcos rivales.
       
-Escribe 'salir' en cualquier momento para finalizar la partida
+Escribe 'salir' en cualquier momento para finalizar la partida.
 """)
 
 # Pedimos el nombre del jugador y la dificultad
