@@ -42,7 +42,7 @@ def coordenada_disparo():
         coordenada = input("Por favor, introduzca la coordenada a la que quiere disparar (escribe 'salir' para finalizar): ")
         coordenada = coordenada.replace(" ", "") # Limpiamos todos los espacios del input
         lista_coordenada_int = [] # Creamos una lista vacia en la que meteremos ints en vez de str
-        if coordenada == "salir":
+        if coordenada.lower() == "salir":
             no_valido = False
             finalizar_partida = True
             return finalizar_partida

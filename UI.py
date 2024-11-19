@@ -99,15 +99,15 @@ def pintar_tableros(partida):
     mensajes = [len(partida.mensajes_turno_humano), len(partida.mensajes_turno_maquina)]
 
     print()
-    mensaje = f"--- J1 DISPAROS TURNO {partida.turno} ---"
+    mensaje = f"--- Disparos J1:{partida.tablero_humano.usuario} ---"
     mensaje += get_relleno_cadena(len_linea_tablero, mensaje) + separador_tableros
-    mensaje += f"--- J2 DISPAROS TURNO {partida.turno} ---"
+    mensaje += f"--- Disparos J2:{partida.tablero_maquina.usuario} ---"
     print(mensaje)
 
     for idx in range(0, max(mensajes)):
         mensaje = ""
         if idx < len(partida.mensajes_turno_humano):
-            mensaje = " >" + partida.mensajes_turno_humano[idx]
+            mensaje = " > " + partida.mensajes_turno_humano[idx]
         if idx < len(partida.mensajes_turno_maquina):
             mensaje += get_relleno_cadena(len_linea_tablero, mensaje) + separador_tableros + " >" + partida.mensajes_turno_maquina[idx]
         print(mensaje)
