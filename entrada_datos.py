@@ -47,16 +47,16 @@ def coordenada_disparo():
 # Para elegir la dificultad vamos a hacer esta funcion:
 
 def dificultad():
-    #TODO: Verificar que no se puedan meter cualquier otra cosa que no sea un numero. Si es blanco, volver a pedir
     for index, n in enumerate(RANGOS):
         print(f"Dificultad {index +1}: {n}")
-    no_valido = True
-    while no_valido:
-        eleccion_dificultad = int(input("Elija la dificultad del 1 al 5: ")) # Le pedimos al sujeto que seleccione la dificultad
-        if eleccion_dificultad <= 5 and eleccion_dificultad >= 1: # Comprobamos que está entre 1 y 5
-            dificultad_seleccionada = RANGOS[eleccion_dificultad-1]
-            print(f"Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
-            no_valido = False
-            return eleccion_dificultad
-        else:
+    input_valido = False
+    while not input_valido:
+        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ") # Le pedimos al sujeto que seleccione la dificultad 
+        if eleccion_dificultad not in ["1","2","3","4","5"]:
+            input_valido = False
             print("Lo siento, no tenemos un cargo para esa dificultad.")
+        else:
+            dificultad_seleccionada = RANGOS[int(eleccion_dificultad)-1]    
+            print(f"Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
+            input_valido = True
+            return int(eleccion_dificultad)
