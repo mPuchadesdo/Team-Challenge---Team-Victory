@@ -52,25 +52,25 @@ class Tablero:
                 for pieza in coord_barco: 
                     self.tablero_barcos[pieza[0], pieza[1]] = var.CARACTER_BARCO   
     
-    def disparar(self, fila=None, columna=None):
+    def disparar(self, fila=None, columna=None): #función de disparos
         # 0 = Agua,  1 = Disparo correco, 2 = Ya disparado
         if fila is None or columna is None:  
             return 0
 
         if self.tablero_barcos[fila, columna] in [var.CARACTER_DISPARO_OK, var.CARACTER_DISPARO_NOK]:
-            return 2
+            return 2 #disparo en coordenada ya disparada anteriormente
 
         elif self.tablero_barcos[fila, columna] == var.CARACTER_BARCO:
-            self.tablero_barcos[fila, columna] = var.CARACTER_DISPARO_OK  # has dado a un barco
-            return 1 
+            self.tablero_barcos[fila, columna] = var.CARACTER_DISPARO_OK  
+            return 1 #disparo en coordenada donde hay un barco
 
         else:
-            self.tablero_barcos[fila, columna] = var.CARACTER_DISPARO_NOK  # has dado a agua
-            return 0
+            self.tablero_barcos[fila, columna] = var.CARACTER_DISPARO_NOK 
+            return 0 #disparo en coordenada donde hay agua
 
     def is_disparo_ok(self, fila = None, columna = None): 
-        if self.tablero_barcos[fila, columna] == var.CARACTER_BARCO:  # has dado a un barco
-            return True 
+        if self.tablero_barcos[fila, columna] == var.CARACTER_BARCO:  
+            return True #verifica si el disparo ha dado a un barco o no
         
         else: 
             return False 
@@ -82,8 +82,8 @@ class Tablero:
             return False
     
     def count_celdas_restantes(self): 
-        celdas = np.sum(self.tablero_barcos == var.CARACTER_BARCO) #crea una matriz 0 si False 1 si true y luego suma los valores de la matriz
-        return celdas
+        celdas = np.sum(self.tablero_barcos == var.CARACTER_BARCO) 
+        return celdas #crea una matriz 0 si False 1 si true y luego suma los valores de la matriz
     
     def count_total_disparos(self): 
         disparos = np.sum(self.tablero_barcos == var.CARACTER_DISPARO_OK)
