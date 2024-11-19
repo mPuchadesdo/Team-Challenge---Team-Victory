@@ -36,7 +36,7 @@ def coordenada_disparo():
     finalizar_partida = False
     coordenada = ""
     while no_valido:
-        coordenada = input("Por favor, introduzca la coordenada a la que quiere disparar (escribe 'salir' para finalizar): ").replace(" ", "") # Limpiamos todos los espacios del input
+        coordenada = input("Por favor, introduzca la coordenada a la que quiere disparar (escribe 'salir' para finalizar): ").replace(" ", "") 
         lista_coordenada_int = [] # Creamos una lista vacia en la que meteremos ints en vez de str
         if coordenada == "salir":
             no_valido = False
@@ -64,7 +64,7 @@ def dificultad():
         print(f"Dificultad {index +1}: {n}")
     input_valido = False
     while not input_valido:
-        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ").replace(" ","") # Le pedimos al sujeto que seleccione la dificultad (eliminando espacios)
+        eleccion_dificultad = input("Elija la dificultad del 1 al 5: ").replace(" ","") # Le pedimos al sujeto que seleccione la dificultad 
         try: # Con un try-except nos aseguramos de que, en caso de no introducir un número del 1 al 5, el programa no de error
             dificultad_seleccionada = var.RANGOS[int(eleccion_dificultad)-1] # Seleccionamos el nombre del rango    
             print(f"¡Perfecto, ha elegido la dificultad {eleccion_dificultad}, ¡se enfrentará a un {dificultad_seleccionada}!")
